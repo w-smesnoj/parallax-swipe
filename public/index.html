@@ -4,7 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="theme-color" content="<%= process.env.VUE_APP_MOBILE_THEME_COLOR%>" />
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+      integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://kit.fontawesome.com/a030b4e538.js"
+      crossorigin="anonymous"
+    ></script>
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
