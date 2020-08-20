@@ -15,4 +15,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.fa,
+.fas {
+  font-size: 1.5em;
+  -webkit-text-stroke: 0.01em;
+}
+</style>
