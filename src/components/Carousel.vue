@@ -93,6 +93,19 @@ export default {
       document.querySelector('#group').scrollTo(x.index * this.boxWidth, 0);
     }
   },
+  watch: {
+    selected: function(newVal, oldVal) {
+      if (oldVal == undefined) {
+        console.log(this.selectedObject.index);
+        document.querySelector('#group').scrollTo({
+          top: 0,
+          left: this.selectedObject.index * this.boxWidth,
+          behavior: 'smooth',
+        });
+      }
+      // console.log('value changed from ' + oldVal + ' to ' + newVal);
+    },
+  },
   methods: {
     clear() {
       this.lastPos = null;
