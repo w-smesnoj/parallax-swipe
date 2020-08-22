@@ -74,6 +74,13 @@ export default {
 </script>
 
 <style scoped>
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v7.0.29,
+* Autoprefixer: v9.7.6
+* Browsers: last 4 version
+*/
+
 button:disabled {
   background: var(--bg-scnd) !important;
 }
@@ -91,6 +98,7 @@ button:disabled {
   font-weight: bold;
 }
 .size > li:focus-within {
+  -webkit-box-shadow: 0px 3px 9px 0pt rgb(32 39 52 / 0.4);
   box-shadow: 0px 3px 9px 0pt rgb(32 39 52 / 0.4);
 }
 .size > li > button:focus {
@@ -115,10 +123,14 @@ button:disabled {
   border: 0.15em solid #2027340f;
 }
 .size {
+  display: -ms-grid;
   display: grid;
   gap: 1em;
+  -ms-grid-columns: auto 1em auto 1em auto 1em auto;
   grid-template-columns: auto auto auto auto;
   grid-auto-flow: row;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   margin-bottom: 1.5em;
 }
@@ -134,8 +146,14 @@ button:disabled {
   min-height: 100%; */
 }
 .gallery > li > button {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   overflow: hidden;
   width: 5em;
@@ -146,19 +164,26 @@ button:disabled {
 }
 
 .gallery > li:focus-within {
+  -webkit-box-shadow: 0px 3px 9px 0pt rgb(32 39 52 / 0.4);
   box-shadow: 0px 3px 9px 0pt rgb(32 39 52 / 0.4);
 }
 .gallery > li > button:focus {
   outline: 0;
   /* border: 2px solid gray; */
+  -webkit-box-shadow: 0px 4px 7px 0pt rgb(32 39 52 / 15%);
   box-shadow: 0px 4px 7px 0pt rgb(32 39 52 / 15%);
 }
 .gallery > li {
   border-radius: 1em;
   overflow: auto;
   border: 0.15em solid transparent;
+  display: inline-block;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
 }
+/* 
 .gallery {
+ 
   display: grid;
   gap: 1em;
   grid-auto-columns: auto auto auto;
@@ -166,8 +191,10 @@ button:disabled {
   width: max-content;
   grid-auto-flow: row;
   align-items: center;
-  margin-bottom: 2em;
+  margin-bottom: 2em; 
+ 
 }
+ */
 main > h3 {
   font-family: 'avant garde';
   letter-spacing: 0.02em;
@@ -177,7 +204,9 @@ main > h3 {
   color: var(--accent);
 }
 .main {
+  display: -ms-grid;
   display: grid;
+  -ms-grid-columns: 1fr auto;
   grid-template-columns: 1fr auto;
   margin-bottom: 1em;
 }
@@ -189,11 +218,14 @@ span.description {
 }
 .details {
   position: absolute;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   background: white;
   margin: 0em -1em;
   width: 100%;
   padding: 1em;
+  -webkit-transform: translatey(-13em);
+  -ms-transform: translatey(-13em);
   transform: translatey(-13em);
   z-index: 200;
 }
