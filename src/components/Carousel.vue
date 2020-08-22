@@ -1,27 +1,32 @@
 <template>
-  <div class="group" id="group">
-    <div class="el" v-for="(x, index) in items" :key="index"></div>
+  <div class="group" id="group" :class="{ noscroll: selectedObject != -1 }">
+    <div class="el" v-for="(x, index) in mainitems" :key="index"></div>
     <div class="elms">
       <div
         class="box"
-        v-for="(x, index) in items"
+        v-for="(item, index) in mainitems"
         :key="index"
-        :class="{ active: selected == index }"
+        :class="{
+          active: selectedObject == item,
+          hidden: selectedObject != undefined && selectedObject != item,
+        }"
+        @click="select(item)"
       >
         <div class="shoe">
-          <img src="https://i.imgur.com/C84ICNv.png" alt="" />
+          <img :src="item.src" alt="" />
         </div>
-        <div
+        <router-link
+          :to="`/store/main/${item.title}`"
           class="hold"
-          :style="`background: ${x.color}`"
-          @click="select(index)"
+          :style="`background: ${item.color}`"
         >
-          <div class="info" :class="{ inverted: x.inverted }">
-            <h2>{{ x.title }}</h2>
-            <span>{{ formatPrice(x.price) }}</span>
+          <div class="info" :class="{ inverted: item.inverted }">
+            <h2>{{ item.title }}</h2>
+            <span>{{ formatPrice(item.price) }}</span>
             <div></div>
           </div>
-        </div>
+          <!-- </button> -->
+        </router-link>
       </div>
     </div>
   </div>
@@ -29,11 +34,20 @@
 
 <script>
 import mixinFuncs from './../store/modules/misc.js';
+import config from '../assets/items.json';
 
 export default {
   mixins: [mixinFuncs],
   props: {
-    items: Array,
+    mainitems: Array,
+    selected: String,
+  },
+  computed: {
+    selectedObject: function() {
+      return config.mainitems.filter((item) =>
+        item.title.includes(this.selected)
+      )[0];
+    },
   },
   data: () => ({
     lastPos: null,
@@ -42,7 +56,6 @@ export default {
 
     title: process.env.VUE_APP_TITLE,
     toggle: false,
-    selected: -1,
     list: [
       {
         color: '#e34c4e',
@@ -72,8 +85,13 @@ export default {
     let totalLength = this.boxWidth * allElms.childElementCount - 25;
     allElms.style.transform = ` translateX(${totalLength * -1}px)`;
 
-    // this.move('right');
-    // this.move('left');
+    if (this.$route.params.mainitem != undefined) {
+      let selected = this.$route.params.mainitem;
+      let x = config.mainitems.filter((item) =>
+        item.title.includes(selected)
+      )[0];
+      document.querySelector('#group').scrollTo(x.index * this.boxWidth, 0);
+    }
   },
   methods: {
     clear() {
@@ -103,14 +121,8 @@ export default {
       this.timer && clearTimeout(this.timer);
     },
 
-    select(ind) {
-      if (this.selected == ind) {
-        this.selected = -1;
-        this.$emit('selected', this.items[this.selected]);
-        return;
-      }
-      this.selected = ind;
-      this.$emit('selected', this.items[this.selected]);
+    select(item) {
+      this.$emit('selected', item.title);
     },
     move(ind) {
       console.log('moved');
@@ -125,7 +137,7 @@ export default {
 
 <style scoped>
 .active > .shoe {
-  transform: translate(3em, -3em) rotate(0deg);
+  transform: translate(2em, -5em) rotate(0deg);
 }
 .shoe {
   display: flex;
@@ -136,10 +148,11 @@ export default {
   width: inherit;
   z-index: 10;
   transform: translate(2em, 5em) rotate(-35deg);
-  transition: transform 0.3s;
+  transition: transform 0.4s ease;
   width: 16em;
   max-width: 16em;
   pointer-events: none;
+  z-index: 200;
   /* filter: drop-shadow(-16px 14px 15px #00000096); */
   /* box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); */
 }
@@ -165,11 +178,16 @@ export default {
 
 .info > span {
   font-size: 1.2em;
-  font-weight: 300;
+  font-family: 'avant garde';
+  letter-spacing: 0.06em;
 }
 /* .info > h2 {
   margin-bottom: 0.4em;
 } */
+.info > h2 {
+  font-family: Avenir;
+  font-weight: 600;
+}
 .info {
   color: white;
   position: absolute;
@@ -208,17 +226,37 @@ export default {
   overflow: scroll;
   scroll-snap-type: y mandatory;
 }
+/* .active > .hold > .info {
+  opacity: 0;
+  pointer-events: 0;
+} */
+.active > .hold > .info {
+  display: none;
+}
 .active > .hold {
   border-radius: 100%;
-  height: 550px !important;
-  width: 550px !important;
-  transform: perspective(810px) translate3d(-40px, -420px, 0px) !important;
+  transform: perspective(810px) translate(7em, -19.5em) scale(2.3, 1.8) !important;
   z-index: 150 !important;
 }
 
+.hidden {
+  opacity: 0 !important;
+  transform: translateX(50px);
+}
+
 .active {
-  background: transparent !important;
   z-index: 150;
+  background: transparent !important;
+}
+
+button.hold:focus {
+  outline: none;
+}
+
+.hold {
+  display: flex !important;
+  box-sizing: content-box;
+  align-items: flex-start;
 }
 
 .hold,
@@ -226,12 +264,15 @@ export default {
   margin-right: 50px;
   width: 65vw;
   height: 18em;
-  display: grid;
   grid-auto-flow: column;
-  display: inline-block;
   border-radius: 1em;
   transition: border-radius 0.3s, transform 0.3s, width 0.3s, height 0.3s,
-    margin-right 0.3s;
+    opacity 0.3s;
+  opacity: 1;
+  border: 0;
+  display: inline-block;
+  text-align: unset;
+  padding: 0;
 }
 
 .move-right {
