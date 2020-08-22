@@ -1,28 +1,74 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <router-view />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+};
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: local('Avenir'),
+    url(assets/fonts/Avenir/Avenir-Heavy.ttf) format('truetype');
+  font-weight: 600;
+}
+@font-face {
+  font-family: 'Avant Garde';
+  src: local('Avant Garde'),
+    url(assets/fonts/AvantGarde/avantgarde.ttf) format('truetype');
+  font-weight: 300;
+}
+@font-face {
+  font-family: 'Avant Garde';
+  src: local('Avant Garde'),
+    url(assets/fonts/AvantGarde/avantgardebold.ttf) format('truetype');
+  font-weight: bold;
+}
+.y {
+  display: none !important;
+}
+body {
+  --bg-main: #ffffff;
+  --bg-scnd: #f7f5f7;
+  --txt-main: #202734;
+  --txt-medium: #5d697e;
+  --btn-main: #f5f4f6;
+  /* --txt-medium-dark: ; */
+  /* --txt-box-bg: ; */
+  --accent: #202734;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+ol {
+  list-style-type: none;
+  padding: 0;
+}
+img {
+  border-style: none;
+  max-width: 6em;
+}
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+a:focus {
+  outline: none;
 }
 </style>

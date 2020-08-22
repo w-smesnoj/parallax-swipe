@@ -1,4 +1,11 @@
-# parallax-swipe
+# Parallax Swipe Realized
+
+[Design Source](https://dribbble.com/shots/13819426-Parallax-Swipe-Mobile-UI-E-Commerce)
+
+[heroku link]
+
+![Demo](.gif)
+
 
 ## Project setup
 ```
