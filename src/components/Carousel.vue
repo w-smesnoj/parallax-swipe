@@ -13,7 +13,17 @@
       >
         <!-- @click="set_selected_by_id(item.title)" -->
         <div class="shoe">
-          <img :src="item.src" alt="" />
+          <picture>
+            <source
+              type="image/webp"
+              :srcset="`/images/shoes/webp/${item.src}.webp`"
+            />
+            <source
+              type="image/png"
+              :srcset="`/images/shoes/tinypng/${item.src}.png`"
+            />
+            <img :src="`/images/shoes/tinypng/${item.src}.png`" alt="" />
+          </picture>
         </div>
         <router-link
           :to="`/store/main/${item.title}`"
@@ -169,7 +179,9 @@ export default {
   /* filter: drop-shadow(-16px 14px 15px #00000096); */
   /* box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); */
 }
-.shoe > img {
+
+.shoe > picture,
+.shoe > picture > img {
   -ms-flex-negative: 0;
   flex-shrink: 0;
   min-width: 100%;
@@ -223,6 +235,7 @@ export default {
   width: 65vw;
   background: transparent;
   scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 .elms {
   display: -ms-grid;

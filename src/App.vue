@@ -47,10 +47,11 @@ body {
   /* --txt-medium-dark: ; */
   /* --txt-box-bg: ; */
   --accent: #202734;
-  scroll-snap-type: x mandatory;
+  /* Breaks firefox scroll */
+  /* scroll-snap-type: x mandatory; */
 }
 html {
-  scroll-snap-type: x mandatory;
+  /* scroll-snap-type: x mandatory; */
 }
 h1,
 h2,

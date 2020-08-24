@@ -5,7 +5,17 @@
       <li class="item" v-for="item in items" :key="item.name">
         <a :href="`https://www.google.com/search?q=${item.title}`">
           <div class="img">
-            <img :src="item.src" alt="" />
+            <picture>
+              <source
+                type="image/webp"
+                :srcset="`/images/shoes/webp/${item.src}.webp`"
+              />
+              <source
+                type="image/png"
+                :srcset="`/images/shoes/tinypng/${item.src}.png`"
+              />
+              <img :src="`/images/shoes/tinypng/${item.src}.png`" alt="" />
+            </picture>
           </div>
           <h3>{{ item.title }}</h3>
           <span>{{ formatPrice(item.price) }}</span>
@@ -64,7 +74,8 @@ export default {
   margin-right: 1em;
   line-height: 1.3;
 }
-.item > a > .img > img {
+.item > a > .img > picture,
+.item > a > .img > picture > img {
   -ms-flex-negative: 0;
   flex-shrink: 0;
   min-width: 100%;

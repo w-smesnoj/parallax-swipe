@@ -12,7 +12,18 @@
         :class="{ selgallery: selgallery == index }"
       >
         <button @click="selgallery = index">
-          <img :src="img.src" />
+          <!-- <img :src="img.src" /> -->
+          <picture>
+            <source
+              type="image/webp"
+              :srcset="`/images/shoes/webp/${selected.src}.webp`"
+            />
+            <source
+              type="image/png"
+              :srcset="`/images/shoes/tinypng/${selected.src}.png`"
+            />
+            <img :src="`/images/shoes/tinypng/${selected.src}.png`" alt="" />
+          </picture>
         </button>
       </li>
     </ol>
@@ -139,7 +150,8 @@ button:disabled {
   border: 0.15em solid var(--accent) !important;
 }
 .gallery > li > button,
-.gallery > li > button > img {
+.gallery > li > button > picture,
+.gallery > li > button > picture > img {
   width: 100%;
   /* flex-shrink: 0;
   min-width: 100%;
