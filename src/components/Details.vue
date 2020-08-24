@@ -1,13 +1,13 @@
 <template>
   <div class="details">
     <div class="main">
-      <h2>{{ selectedObject.title }}</h2>
-      <h3>{{ formatPrice(selectedObject.price) }}</h3>
+      <h2>{{ selected.title }}</h2>
+      <h3>{{ formatPrice(selected.price) }}</h3>
     </div>
-    <span class="description">{{ selectedObject.description }}</span>
+    <span class="description">{{ selected.description }}</span>
     <ol class="gallery">
       <li
-        v-for="(img, index) in selectedObject.images"
+        v-for="(img, index) in selected.images"
         :key="img.type"
         :class="{ selgallery: selgallery == index }"
       >
@@ -25,7 +25,7 @@
       >
         <button
           @click="selsize = index"
-          :disabled="selectedObject.soldout.includes(size)"
+          :disabled="selected.soldout.includes(size)"
         >
           {{ size }}
         </button>
@@ -37,12 +37,17 @@
 
 <script>
 import mixinFuncs from './../store/modules/misc.js';
-import config from '../assets/items.json';
 
 export default {
   mixins: [mixinFuncs],
   created() {
     document.addEventListener('deviceready', this.onDeviceReady, false);
+    document.title = `Store - ${this.$route.params.mainitem}`;
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
   },
   data: () => ({
     shoesizesraw: process.env.VUE_APP_SHOE_SIZES,
@@ -61,14 +66,9 @@ export default {
     shoesizes: function() {
       return this.shoesizesraw.split(', ');
     },
-    selectedObject: function() {
-      return config.mainitems.filter((item) =>
-        item.title.includes(this.selected)
-      )[0];
-    },
   },
   props: {
-    selected: String,
+    selected: Object,
   },
 };
 </script>
@@ -109,7 +109,7 @@ button:disabled {
   border: 0;
   width: 100%;
   background: white;
-  font-family: 'avant garde';
+  font-family: 'avant garde', Roboto, Arial;
   letter-spacing: 0.055em;
   color: #131922;
   font-size: 01em;

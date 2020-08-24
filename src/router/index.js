@@ -17,6 +17,11 @@ const router = new Router({
     {
       path: '/store',
       name: 'Store',
+      meta: {
+        title: () => {
+          return 'Store';
+        },
+      },
       component: Store,
       children: [
         {
@@ -28,4 +33,12 @@ const router = new Router({
     },
   ],
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title(to);
+  }
+  next();
+});
+
 export default router;

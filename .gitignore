@@ -22,3 +22,16 @@ pnpm-debug.log*
 *.sln
 *.sw?
 node_modules
+/src/assets/fonts/AvantGarde/avantgarde.ttf
+/src/assets/fonts/AvantGarde/avantgardebold.ttf
+/src/assets/fonts/Avenir/Avenir-Black.ttf
+/src/assets/fonts/Avenir/Avenir-BlackOblique.ttf
+/src/assets/fonts/Avenir/Avenir-Book.ttf
+/src/assets/fonts/Avenir/Avenir-Heavy.ttf
+/src/assets/fonts/Avenir/Avenir-HeavyOblique.ttf
+/src/assets/fonts/Avenir/Avenir-Light.ttf
+/src/assets/fonts/Avenir/Avenir-LightOblique.ttf
+/src/assets/fonts/Avenir/Avenir-Medium.ttf
+/src/assets/fonts/Avenir/Avenir-MediumOblique.ttf
+/src/assets/fonts/Avenir/Avenir-Oblique.ttf
+/src/assets/fonts/Avenir/Avenir-Roman.ttf

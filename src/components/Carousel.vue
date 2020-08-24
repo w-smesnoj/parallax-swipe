@@ -1,5 +1,5 @@
 <template>
-  <div class="group" id="group" :class="{ nosc: selectedObject != undefined }">
+  <div class="group" id="group" :class="{ nosc: selected != undefined }">
     <div class="el" v-for="(x, index) in mainitems" :key="index"></div>
     <div class="elms">
       <div
@@ -7,11 +7,11 @@
         v-for="(item, index) in mainitems"
         :key="index"
         :class="{
-          active: selectedObject == item,
-          hidden: selectedObject != undefined && selectedObject != item,
+          active: selected == item,
+          hidden: selected != undefined && selected != item,
         }"
-        @click="select(item)"
       >
+        <!-- @click="set_selected_by_id(item.title)" -->
         <div class="shoe">
           <img :src="item.src" alt="" />
         </div>
@@ -33,21 +33,14 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 import mixinFuncs from './../store/modules/misc.js';
-import config from '../assets/items.json';
 
 export default {
   mixins: [mixinFuncs],
   props: {
     mainitems: Array,
-    selected: String,
-  },
-  computed: {
-    selectedObject: function() {
-      return config.mainitems.filter((item) =>
-        item.title.includes(this.selected)
-      )[0];
-    },
+    selected: Object,
   },
   data: () => ({
     lastPos: null,
@@ -81,33 +74,22 @@ export default {
     window.addEventListener('resize', this.handleResize);
     this.handleResize();
     document.getElementById('group').onscroll = this.checkScrollSpeed;
-
-    if (this.$route.params.mainitem != undefined) {
-      let selected = this.$route.params.mainitem;
-      let x = config.mainitems.filter((item) =>
-        item.title.includes(selected)
-      )[0];
-      document.querySelector('#group').scrollTo(x.index * this.boxWidth, 0);
-    }
   },
   watch: {
     selected: function(newVal, oldVal) {
       if (oldVal == undefined) {
-        console.log(this.selectedObject.index);
         document.querySelector('#group').scrollTo({
           top: 0,
-          left: this.selectedObject.index * this.boxWidth,
+          left: this.selected.index * this.boxWidth,
           behavior: 'smooth',
         });
       }
-      // console.log('value changed from ' + oldVal + ' to ' + newVal);
     },
   },
   methods: {
+    ...mapMutations(['set_selected_by_id']),
     handleResize() {
-      console.log('resize');
       this.vw = window.innerWidth;
-
       this.boxWidth = (window.innerWidth / 100) * 65 + 50;
       let allElms = document.getElementsByClassName('elms')[0];
       let totalLength = this.boxWidth * allElms.childElementCount - 25;
@@ -146,17 +128,6 @@ export default {
         });
       }
       this.lastPos = this.newPos;
-    },
-
-    select(item) {
-      this.$emit('selected', item.title);
-    },
-    move(ind) {
-      console.log('moved');
-      document.getElementById('group').scrollTo({
-        left: ind * this.boxWidth,
-        behavior: 'smooth',
-      });
     },
   },
 };
@@ -221,7 +192,7 @@ export default {
 
 .info > span {
   font-size: 1.2em;
-  font-family: 'avant garde';
+  font-family: 'avant garde', Roboto, Arial;
   letter-spacing: 0.06em;
 }
 /* .info > h2 {
@@ -244,6 +215,8 @@ export default {
   pointer-events: none;
   /* width: inherit; */
   gap: 1em;
+  opacity: 1;
+  transition: opacity 0.4s;
 }
 .el {
   margin-right: 3em;
@@ -281,7 +254,7 @@ export default {
   pointer-events: 0;
 } */
 .active > .hold > .info {
-  display: none;
+  opacity: 0;
 }
 .active > .hold {
   border-radius: 100%;
@@ -376,6 +349,8 @@ button.hold:focus {
   /* transform: translateY(-158px); */
   padding-top: 174px;
   margin-top: -1em;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 .nosc {
   -ms-touch-action: none;

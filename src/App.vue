@@ -17,6 +17,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* 
 @font-face {
   font-family: 'Avenir';
   src: local('Avenir'),
@@ -35,9 +36,8 @@ export default {
     url(assets/fonts/AvantGarde/avantgardebold.ttf) format('truetype');
   font-weight: bold;
 }
-.y {
-  display: none !important;
-}
+*/
+
 body {
   --bg-main: #ffffff;
   --bg-scnd: #f7f5f7;
@@ -47,6 +47,10 @@ body {
   /* --txt-medium-dark: ; */
   /* --txt-box-bg: ; */
   --accent: #202734;
+  scroll-snap-type: x mandatory;
+}
+html {
+  scroll-snap-type: x mandatory;
 }
 h1,
 h2,
