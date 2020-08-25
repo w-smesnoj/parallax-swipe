@@ -21,22 +21,22 @@
       "index": 0,
       "title": "Alpha Savage",
       "price": 8895,
-      "src": "https://i.imgur.com/zM3XsbN.png",
+      "src": "01",
       "color": "#e34c4e",
       "inverted": false,
       "description": "Qui sint eos eum voluptatibus provident autem. Sunt ut rerum quo sint sapiente. Dolorem ipsam recusandae maiores dolorem nam laboriosam.",
       "images": [
         {
           "type": "1",
-          "src": "https://i.imgur.com/OgQ9vN6.png"
+          "src": "01"
         },
         {
           "type": "2",
-          "src": "https://i.imgur.com/OgQ9vN6.png"
+          "src": "01"
         },
         {
           "type": "3",
-          "src": "https://i.imgur.com/OgQ9vN6.png"
+          "src": "01"
         }
       ],
       "soldout": ["UK 11", "UK 13"]
@@ -45,22 +45,22 @@
       "index": 1,
       "title": "Retro High OG",
       "price": 11897,
-      "src": "https://i.imgur.com/mRFerIT.png",
+      "src": "02",
       "color": "#fdb963",
       "inverted": true,
       "description": "Qui sint eos eum voluptatibus provident autem. Sunt ut rerum quo sint sapiente. Dolorem ipsam recusandae maiores dolorem nam laboriosam.",
       "images": [
         {
           "type": "1",
-          "src": "https://i.imgur.com/OgQ9vN6.png"
+          "src": "01"
         },
         {
           "type": "2",
-          "src": "https://i.imgur.com/OgQ9vN6.png"
+          "src": "01"
         },
         {
           "type": "3",
-          "src": "https://i.imgur.com/OgQ9vN6.png"
+          "src": "01"
         }
       ],
       "soldout": ["UK 11", "UK 13"]
@@ -69,22 +69,22 @@
       "index": 2,
       "title": "KD13 EP",
       "price": 12995,
-      "src": "https://i.imgur.com/jTchiQv.png",
+      "src": "03",
       "color": "#2F60CC",
       "inverted": false,
       "description": "Qui sint eos eum voluptatibus provident autem. Sunt ut rerum quo sint sapiente. Dolorem ipsam recusandae maiores dolorem nam laboriosam.",
       "images": [
         {
           "type": "1",
-          "src": "https://i.imgur.com/OgQ9vN6.png"
+          "src": "01"
         },
         {
           "type": "2",
-          "src": "https://i.imgur.com/OgQ9vN6.png"
+          "src": "01"
         },
         {
           "type": "3",
-          "src": "https://i.imgur.com/OgQ9vN6.png"
+          "src": "01"
         }
       ],
       "soldout": ["UK 11", "UK 13"]
@@ -93,22 +93,22 @@
       "index": 3,
       "title": "Zoom Pegasus 36",
       "price": 11995,
-      "src": "https://i.imgur.com/jGkY8pF.png",
+      "src": "05",
       "color": "#5B9C9A",
       "inverted": true,
       "description": "Qui sint eos eum voluptatibus provident autem. Sunt ut rerum quo sint sapiente. Dolorem ipsam recusandae maiores dolorem nam laboriosam.",
       "images": [
         {
           "type": "1",
-          "src": "https://i.imgur.com/OgQ9vN6.png"
+          "src": "01"
         },
         {
           "type": "2",
-          "src": "https://i.imgur.com/OgQ9vN6.png"
+          "src": "01"
         },
         {
           "type": "3",
-          "src": "https://i.imgur.com/OgQ9vN6.png"
+          "src": "01"
         }
       ],
       "soldout": ["UK 11", "UK 13"]
@@ -118,22 +118,22 @@
     {
       "title": "KD 13 'Bred'",
       "price": 12797,
-      "src": "https://i.imgur.com/nv1NQR0.png"
+      "src": "06"
     },
     {
       "title": "Retro 'University Gold'",
       "price": 15995,
-      "src": "https://i.imgur.com/tnq3bYi.png"
+      "src": "07"
     },
     {
       "title": "Air Zoom Pegasus 37",
       "price": 9995,
-      "src": "https://i.imgur.com/CoSTQ1u.png"
+      "src": "04"
     },
     {
       "title": "High OG Satin Black Toe",
       "price": 9995,
-      "src": "https://i.imgur.com/GQTh6vH.png"
+      "src": "08"
     }
   ]
 }

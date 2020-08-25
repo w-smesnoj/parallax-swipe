@@ -1,5 +1,5 @@
 <template>
-  <div class="group" id="group" :class="{ noscroll: selectedObject != -1 }">
+  <div class="group" id="group" :class="{ nosc: selected != undefined }">
     <div class="el" v-for="(x, index) in mainitems" :key="index"></div>
     <div class="elms">
       <div
@@ -7,13 +7,23 @@
         v-for="(item, index) in mainitems"
         :key="index"
         :class="{
-          active: selectedObject == item,
-          hidden: selectedObject != undefined && selectedObject != item,
+          active: selected == item,
+          hidden: selected != undefined && selected != item,
         }"
-        @click="select(item)"
       >
+        <!-- @click="set_selected_by_id(item.title)" -->
         <div class="shoe">
-          <img :src="item.src" alt="" />
+          <picture>
+            <source
+              type="image/webp"
+              :srcset="`/images/shoes/webp/${item.src}.webp`"
+            />
+            <source
+              type="image/png"
+              :srcset="`/images/shoes/tinypng/${item.src}.png`"
+            />
+            <img :src="`/images/shoes/tinypng/${item.src}.png`" alt="" />
+          </picture>
         </div>
         <router-link
           :to="`/store/main/${item.title}`"
@@ -33,21 +43,14 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 import mixinFuncs from './../store/modules/misc.js';
-import config from '../assets/items.json';
 
 export default {
   mixins: [mixinFuncs],
   props: {
     mainitems: Array,
-    selected: String,
-  },
-  computed: {
-    selectedObject: function() {
-      return config.mainitems.filter((item) =>
-        item.title.includes(this.selected)
-      )[0];
-    },
+    selected: Object,
   },
   data: () => ({
     lastPos: null,
@@ -78,38 +81,29 @@ export default {
     stage: 0,
   }),
   mounted() {
-    this.vw = window.innerWidth;
-    this.boxWidth = (window.innerWidth / 100) * 65 + 50;
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize();
     document.getElementById('group').onscroll = this.checkScrollSpeed;
-    let allElms = document.getElementsByClassName('elms')[0];
-    let totalLength = this.boxWidth * allElms.childElementCount - 25;
-    allElms.style.transform = ` translateX(${totalLength * -1}px)`;
-
-    if (this.$route.params.mainitem != undefined) {
-      let selected = this.$route.params.mainitem;
-      let x = config.mainitems.filter((item) =>
-        item.title.includes(selected)
-      )[0];
-      document.querySelector('#group').scrollTo(x.index * this.boxWidth, 0);
-    }
   },
   watch: {
     selected: function(newVal, oldVal) {
       if (oldVal == undefined) {
-        console.log(this.selectedObject.index);
         document.querySelector('#group').scrollTo({
           top: 0,
-          left: this.selectedObject.index * this.boxWidth,
+          left: this.selected.index * this.boxWidth,
           behavior: 'smooth',
         });
       }
-      // console.log('value changed from ' + oldVal + ' to ' + newVal);
     },
   },
   methods: {
-    clear() {
-      this.lastPos = null;
-      document.body.removeAttribute('style');
+    ...mapMutations(['set_selected_by_id']),
+    handleResize() {
+      this.vw = window.innerWidth;
+      this.boxWidth = (window.innerWidth / 100) * 65 + 50;
+      let allElms = document.getElementsByClassName('elms')[0];
+      let totalLength = this.boxWidth * allElms.childElementCount - 25;
+      allElms.style.transform = ` translateX(${totalLength * -1}px)`;
     },
     checkScrollSpeed() {
       this.newPos = document.getElementById('group').scrollLeft;
@@ -118,31 +112,32 @@ export default {
         var delta = this.newPos - this.lastPos;
         delta = delta * 4;
         // min/max values
-        if (delta > 45) delta = 45;
-        else if (delta < -45) delta = -45;
+        if (delta > 25) delta = 25;
+        else if (delta < -25) delta = -25;
         if (delta < 10 && delta > -10) delta = 0;
         if (this.newPos == 0) delta = 0;
 
-        let elms = document.getElementsByClassName('box');
+        let elmsString = `perspective(1500px) rotateY(${delta}deg)`;
+        let elms = document.getElementsByClassName('hold');
         elms.forEach((elm) => {
-          elm.style.transform = ` perspective(1500px) rotateY(${delta}deg)`;
+          elm.style.webkitTransform = elmsString;
+          elm.style.mozTransform = elmsString;
+          elm.style.msTransform = elmsString;
+          elm.style.oTransform = elmsString;
+          elm.style.transform = elmsString;
+        });
+        let shoes = document.getElementsByClassName('shoe');
+
+        let shoeString = `perspective(2000px) rotateY(${delta}deg) translate3D(40px, -30px, 2.5em) rotate(-35deg)`;
+        shoes.forEach((elm) => {
+          elm.style.webkitTransform = shoeString;
+          elm.style.mozTransform = shoeString;
+          elm.style.msTransform = shoeString;
+          elm.style.oTransform = shoeString;
+          elm.style.transform = shoeString;
         });
       }
       this.lastPos = this.newPos;
-
-      this.timer = setTimeout(this.clear, 100);
-      this.timer && clearTimeout(this.timer);
-    },
-
-    select(item) {
-      this.$emit('selected', item.title);
-    },
-    move(ind) {
-      console.log('moved');
-      document.getElementById('group').scrollTo({
-        left: ind * this.boxWidth,
-        behavior: 'smooth',
-      });
     },
   },
 };
@@ -150,26 +145,44 @@ export default {
 
 <style scoped>
 .active > .shoe {
-  transform: translate(2em, -5em) rotate(0deg);
+  -webkit-transform: translate3D(13vw, -180px, 4em) rotateY(0deg) scale(1.2) !important;
+  transform: translate3D(13vw, -180px, 4em) rotateY(0deg) scale(1.2) !important;
 }
 .shoe {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   overflow: hidden;
   position: absolute;
   width: inherit;
   z-index: 10;
-  transform: translate(2em, 5em) rotate(-35deg);
+  -webkit-transform: perspective(2000px) translate3D(40px, -30px, 2.5em)
+    rotate(-35deg);
+  transform: perspective(2000px) translate3D(40px, -30px, 2.5em) rotate(-35deg);
+  bottom: 0;
+  right: 0;
+  -webkit-transition: -webkit-transform 0.4s ease;
+  transition: -webkit-transform 0.4s ease;
+  -o-transition: transform 0.4s ease;
   transition: transform 0.4s ease;
-  width: 16em;
-  max-width: 16em;
+  transition: transform 0.4s ease, -webkit-transform 0.4s ease;
+  width: 65vw;
+  max-width: 300px;
   pointer-events: none;
   z-index: 200;
   /* filter: drop-shadow(-16px 14px 15px #00000096); */
   /* box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); */
 }
-.shoe > img {
+
+.shoe > picture,
+.shoe > picture > img {
+  -ms-flex-negative: 0;
   flex-shrink: 0;
   min-width: 100%;
   min-height: 100%;
@@ -191,7 +204,7 @@ export default {
 
 .info > span {
   font-size: 1.2em;
-  font-family: 'avant garde';
+  font-family: 'avant garde', Roboto, Arial;
   letter-spacing: 0.06em;
 }
 /* .info > h2 {
@@ -205,22 +218,31 @@ export default {
   color: white;
   position: absolute;
   padding: 2em 1em;
+  display: -ms-grid;
   display: grid;
   grid-auto-rows: auto auto 1fr;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
   height: fit-content;
   pointer-events: none;
-  width: inherit;
+  /* width: inherit; */
   gap: 1em;
+  opacity: 1;
+  transition: opacity 0.4s;
 }
 .el {
   margin-right: 3em;
   width: 65vw;
   background: transparent;
   scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 .elms {
+  display: -ms-grid;
   display: grid;
   grid-auto-flow: column;
+  -webkit-transform: translateX(-1175px);
+  -ms-transform: translateX(-1175px);
   transform: translateX(-1175px);
   padding-right: 10em;
   z-index: 150;
@@ -237,6 +259,7 @@ export default {
 .container {
   width: 100vw;
   overflow: scroll;
+  -ms-scroll-snap-type: y mandatory;
   scroll-snap-type: y mandatory;
 }
 /* .active > .hold > .info {
@@ -244,17 +267,20 @@ export default {
   pointer-events: 0;
 } */
 .active > .hold > .info {
-  display: none;
+  opacity: 0;
 }
 .active > .hold {
   border-radius: 100%;
+  -webkit-transform: perspective(810px) translate(7em, -19.5em) scale(2.3, 1.8) !important;
   transform: perspective(810px) translate(7em, -19.5em) scale(2.3, 1.8) !important;
   z-index: 150 !important;
 }
 
 .hidden {
   opacity: 0 !important;
-  transform: translateX(50px);
+  /* -webkit-transform: translateX(50px);
+  -ms-transform: translateX(50px);
+  transform: translateX(50px); */
 }
 
 .active {
@@ -267,8 +293,13 @@ button.hold:focus {
 }
 
 .hold {
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
   display: flex !important;
+  -webkit-box-sizing: content-box;
   box-sizing: content-box;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
   align-items: flex-start;
 }
 
@@ -279,25 +310,46 @@ button.hold:focus {
   height: 18em;
   grid-auto-flow: column;
   border-radius: 1em;
+  -webkit-transition: border-radius 0.3s, width 0.3s, height 0.3s, opacity 0.3s,
+    -webkit-transform 0.3s;
+  transition: border-radius 0.3s, width 0.3s, height 0.3s, opacity 0.3s,
+    -webkit-transform 0.3s;
+  -o-transition: border-radius 0.3s, transform 0.3s, width 0.3s, height 0.3s,
+    opacity 0.3s;
   transition: border-radius 0.3s, transform 0.3s, width 0.3s, height 0.3s,
     opacity 0.3s;
+  transition: border-radius 0.3s, transform 0.3s, width 0.3s, height 0.3s,
+    opacity 0.3s, -webkit-transform 0.3s;
   opacity: 1;
   border: 0;
   display: inline-block;
   text-align: unset;
   padding: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
 }
 
 .move-right {
+  -webkit-animation: tilt-right 0.65s;
   animation: tilt-right 0.65s;
 }
 .move-left {
+  -webkit-animation: tilt-left 0.65s;
   animation: tilt-left 0.65s;
 }
 .group {
+  -webkit-transition: -webkit-transform 0.35s ease;
+  transition: -webkit-transform 0.35s ease;
+  -o-transition: transform 0.35s ease;
   transition: transform 0.35s ease;
+  transition: transform 0.35s ease, -webkit-transform 0.35s ease;
   overflow-y: hidden;
   overflow-x: scroll;
+  display: -ms-grid;
   display: grid;
   grid-auto-flow: column;
   height: 18em;
@@ -310,5 +362,11 @@ button.hold:focus {
   /* transform: translateY(-158px); */
   padding-top: 174px;
   margin-top: -1em;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+.nosc {
+  -ms-touch-action: none;
+  touch-action: none;
 }
 </style>

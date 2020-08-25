@@ -2,10 +2,9 @@
 
 [Design Source](https://dribbble.com/shots/13819426-Parallax-Swipe-Mobile-UI-E-Commerce)
 
-[heroku link]
+[Heroku Live Demo](https://fierce-island-96798.herokuapp.com/)
 
-![Demo](.gif)
-
+![Demo](demo.gif)
 
 ## Project setup
 ```
