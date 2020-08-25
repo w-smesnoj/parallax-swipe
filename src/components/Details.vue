@@ -5,44 +5,56 @@
       <h3>{{ formatPrice(selected.price) }}</h3>
     </div>
     <span class="description">{{ selected.description }}</span>
-    <ol class="gallery">
-      <li
-        v-for="(img, index) in selected.images"
-        :key="img.type"
-        :class="{ selgallery: selgallery == index }"
-      >
-        <button @click="selgallery = index">
-          <!-- <img :src="img.src" /> -->
-          <picture>
-            <source
-              type="image/webp"
-              :srcset="`/images/shoes/webp/${selected.src}.webp`"
-            />
-            <source
-              type="image/png"
-              :srcset="`/images/shoes/tinypng/${selected.src}.png`"
-            />
-            <img :src="`/images/shoes/tinypng/${selected.src}.png`" alt="" />
-          </picture>
-        </button>
-      </li>
-    </ol>
-    <h3>Select size</h3>
-    <ol class="size">
-      <li
-        v-for="(size, index) in shoesizes"
-        :key="size"
-        :class="{ selsize: selsize == index }"
-      >
-        <button
-          @click="selsize = index"
-          :disabled="selected.soldout.includes(size)"
+    <form method="POST">
+      <ol class="gallery">
+        <li v-for="img in selected.images" :key="img.type">
+          <input
+            type="radio"
+            :id="img.type"
+            :value="img.type"
+            v-model="pickedimg"
+          />
+          <label :for="img.type">
+            <picture>
+              <source
+                type="image/webp"
+                :srcset="`/images/shoes/webp/${selected.src}.webp`"
+              />
+              <source
+                type="image/png"
+                :srcset="`/images/shoes/tinypng/${selected.src}.png`"
+              />
+              <img :src="`/images/shoes/tinypng/${selected.src}.png`" alt="" />
+            </picture>
+          </label>
+        </li>
+      </ol>
+      <h3>Select size</h3>
+      <ol class="size">
+        <li
+          v-for="(size, index) in shoesizes"
+          :key="size"
+          :class="{ selsize: selsize == index }"
         >
-          {{ size }}
-        </button>
-      </li>
-    </ol>
-    <button class="button add" @click="notify()">Add to Bag</button>
+          <input
+            type="radio"
+            :id="size"
+            :value="size"
+            v-model="picked"
+            :disabled="selected.soldout.includes(size)"
+          />
+          <label :for="size">{{ size }}</label>
+          <!-- <button
+            @click="selsize = index"
+            :disabled="selected.soldout.includes(size)"
+          > -->
+          <!-- {{ size }} -->
+          <!-- </button> -->
+        </li>
+      </ol>
+      <input type="submit" value="Add to Bag" @click.prevent="notify()" />
+      <!-- <button class="button add" @click="notify()">Add to Bag</button> -->
+    </form>
   </div>
 </template>
 
@@ -62,8 +74,9 @@ export default {
   },
   data: () => ({
     shoesizesraw: process.env.VUE_APP_SHOE_SIZES,
-    selgallery: 0,
     selsize: undefined,
+    picked: null,
+    pickedimg: '1',
   }),
   methods: {
     onDeviceReady() {
@@ -92,10 +105,27 @@ export default {
 * Browsers: last 4 version
 */
 
-button:disabled {
+input[type='radio']:focus + label {
+  background: red !important;
+}
+input[type='radio']:disabled + label {
   background: var(--bg-scnd) !important;
 }
-.button {
+.size > li > label {
+  padding: 5px;
+  cursor: pointer;
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  -o-appearance: button;
+  -ms-appearance: button;
+  appearance: button;
+}
+input[type='radio'] {
+  box-sizing: border-box;
+  padding: 0;
+  display: none;
+}
+input[type='submit'] {
   width: 100%;
   padding: 1em;
   border-radius: 0.7em;
@@ -104,7 +134,7 @@ button:disabled {
   font-size: large;
   background: var(--accent);
 }
-.selsize {
+input[type='radio']:checked + label {
   border: 0.15em solid var(--accent) !important;
   font-weight: bold;
 }
@@ -112,27 +142,34 @@ button:disabled {
   -webkit-box-shadow: 0px 3px 9px 0pt rgb(32 39 52 / 0.4);
   box-shadow: 0px 3px 9px 0pt rgb(32 39 52 / 0.4);
 }
-.size > li > button:focus {
+.size > li > label:focus {
   outline: 0;
 }
-.size > li > button {
+.size > li > label {
   padding: 0.6em;
   border: 0;
   width: 100%;
+  width: -moz-available; /* WebKit-based browsers will ignore this. */
+  width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+  width: fill-available;
   background: white;
   font-family: 'avant garde', Roboto, Arial;
   letter-spacing: 0.055em;
   color: #131922;
   font-size: 01em;
   font-weight: inherit;
+  text-align: center;
+  border: 0.15em solid #2027340f;
+  border-radius: 0.7em;
+  display: inline-block;
 }
-.size > li {
+/* .size > li {
   border-radius: 0.7em;
   overflow: hidden;
   text-align: center;
   color: var(--accent);
   border: 0.15em solid #2027340f;
-}
+} */
 .size {
   display: -ms-grid;
   display: grid;
@@ -149,15 +186,15 @@ button:disabled {
 .selgallery {
   border: 0.15em solid var(--accent) !important;
 }
-.gallery > li > button,
-.gallery > li > button > picture,
-.gallery > li > button > picture > img {
+.gallery > li > label,
+.gallery > li > label > picture,
+.gallery > li > label > picture > img {
   width: 100%;
   /* flex-shrink: 0;
   min-width: 100%;
   min-height: 100%; */
 }
-.gallery > li > button {
+.gallery > li > label {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -173,6 +210,7 @@ button:disabled {
   padding: 0.25em;
   background: var(--bg-scnd);
   border: 0;
+  border-radius: 1em;
 }
 
 .gallery > li:focus-within {
@@ -190,8 +228,8 @@ button:disabled {
   overflow: auto;
   border: 0.15em solid transparent;
   display: inline-block;
-  margin-right: 1rem;
-  margin-bottom: 1rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 /* 
 .gallery {
